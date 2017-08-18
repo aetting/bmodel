@@ -191,37 +191,37 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     out.write('Context %s, Retrieval %s\n'%(context_size,retrieval_size))
     out.write('Vocab %s, Embedding %s\n'%(vocab_size,emb_size))
 
-    wgt = open('weightcheck%s.txt'%modelID,'w')
+#     wgt = open('weightcheck%s.txt'%modelID,'w')
     
     net1 = NetInteg(vocab_size,emb_size,context_size,labelnum,input='dist',output = 'dist')
     
     print '\n\nTRAINING PART ONE\n\n'
     if out: out.write('\nTRAINING PART ONE\n\n')
 
-    wgt.write('\n\npre training 1\n\n')
-    for p in net1.named_parameters(): wgt.write(str(p))
+#     wgt.write('\n\npre training 1\n\n')
+#     for p in net1.named_parameters(): wgt.write(str(p))
     
     train(net1,'integ',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,output='dist',outlog=out,reducelr=reducelr)
 
-    wgt.write('\n\npost training 1\n\n')
-    for p in net1.named_parameters(): wgt.write(str(p))
+#     wgt.write('\n\npost training 1\n\n')
+#     for p in net1.named_parameters(): wgt.write(str(p))
 
     net2 = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist')
 
     insert_saved_weights(net2,net1.state_dict(),weights_to_freeze)
     freeze_weights(net2,weights_to_freeze)
 
-    wgt.write('\n\npre training 2\n\n')
-    for p in net2.named_parameters(): wgt.write(str(p))
+#     wgt.write('\n\npre training 2\n\n')
+#     for p in net2.named_parameters(): wgt.write(str(p))
 
     print '\n\n\n\nTRAINING PART TWO\n\n\n\n'
     if out: out.write('TRAINING PART TWO\n\n')
     train(net2,'full',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,vars_to_freeze=weights_to_freeze,output='dist',outlog=out,reducelr=reducelr) 
 
-    wgt.write('\n\npost training 2\n\n')
-    for p in net2.named_parameters(): wgt.write(str(p))
+#     wgt.write('\n\npost training 2\n\n')
+#     for p in net2.named_parameters(): wgt.write(str(p))
 
-    wgt.close()
+#     wgt.close()
     out.close()
     
     torch.save(net2.state_dict(), 'modelsave%s'%modelID)
