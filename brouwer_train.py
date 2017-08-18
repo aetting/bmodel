@@ -181,11 +181,11 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     lemmatize_input = False
     weights_to_freeze = ['integ.weight','integ_out.weight']
     
-    (trainingsuf,dict,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets) = settingvars
+    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets) = settingvars
     
     out = open('traininglog%s.txt'%modelID,'w')
     out.write('Training set: trainingpairs-%s\n'%trainingsuf)
-    out.write('Embeddings: %s\n'%dict)
+    out.write('Embeddings: %s\n'%embdic)
     out.write('Binary: %s\n'%binary)
     out.write('Reduce lr: %s\n'%reducelr)
     out.write('Context %s, Retrieval %s\n'%(context_size,retrieval_size))
@@ -229,7 +229,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     return net2
     
 
-with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,dict,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
+with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
 
 # meaning_dict_list = read_meaning_dict('sim1.csv')
 # inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list)
@@ -240,10 +240,10 @@ with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,dict,b
 # for pair in inputpairs: print pair
 
 with open('trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
-word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,dict,debug=False,binary=binary)
+word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 
 epochsets = (maxup,itperup)
-settingvars = (trainingsuf,dict,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets)
+settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets)
 
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 

@@ -10,7 +10,7 @@ itperup = 100 #100 in Brouwer
 
 reducelr = True
 
-dict='brouwerCOALS-100.txt'
+embdic='brouwerCOALS-100.txt'
 binary = True
 
 # dict='brouwerGloVe-100.txt'
