@@ -38,7 +38,8 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,context_
     num_updates = 0
     
     max_updates = 7000 #7000 in Brouwer
-    items_per_update = 2 #100 in Brouwer
+    items_per_update = 100 #100 in Brouwer
+    print('%s items per update, %s total updates\n'%(items_per_update,max_updates))
     if outlog: outlog.write('%s items per update, %s total updates\n'%(items_per_update,max_updates))
     
     if phase == 'integ':

@@ -79,7 +79,7 @@ def plot_means(meandict,sedict,title,filestr,modelid):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '1c'
+modelID = '1d'
 
 print 'Loading variables ...'
 with open('settings%s'%modelID) as settings: trainingsuf,dict,binary,context_size,retrieval_size = pickle.load(settings)
