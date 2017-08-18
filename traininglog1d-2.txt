@@ -1,0 +1,15 @@
+Training set: trainingpairs-br-origfulldutch
+Embeddings: brouwerCOALS-100.txt
+Binary: True
+Reduce lr: True
+Context 200, Retrieval 80
+Vocab 35, Embedding 100
+
+TRAINING PART ONE
+
+100 items per update, 7000 total updates
+
+NetInteg (
+  (integ): Linear (300 -> 200)
+  (integ_out): Linear (200 -> 300)
+)

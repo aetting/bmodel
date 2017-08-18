@@ -6,6 +6,7 @@ import torch.optim as optim
 import numpy as np
 from util_brouwer import *
 from brouwer_model import *
+from brouwer_config import *
 
 
 def maxind(varvec):
@@ -33,12 +34,13 @@ def get_weight_update(gradient,prev_update,lr,alpha):
     update = t1+t2
     return update
     
-def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,context_size=200,vars_to_freeze=None,lemmatize_label=False,lemmatize_input=False,output='dist',outlog=None):
+def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochsets,context_size=200,vars_to_freeze=None,lemmatize_label=False,lemmatize_input=False,output='dist',outlog=None,reducelr=False):
     num_items = 0
     num_updates = 0
     
-    max_updates = 7000 #7000 in Brouwer
-    items_per_update = 100 #100 in Brouwer
+#     max_updates = 7000 #7000 in Brouwer
+#     items_per_update = 3 #100 in Brouwer
+    max_updates,items_per_update = epochsets
     print('%s items per update, %s total updates\n'%(items_per_update,max_updates))
     if outlog: outlog.write('%s items per update, %s total updates\n'%(items_per_update,max_updates))
     
@@ -162,8 +164,8 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,context_
                 
                 cumloss = 0
 
-                if num_updates % 700 == 0:
-                    lr *= .95
+                if reducelr:
+                    if num_updates % 700 == 0: lr *= .95
                 if num_updates == max_updates: 
                     print 'Correct: %s out of %s (%s)'%(acc[0],acc[1],float(acc[0])/acc[1])
                     if outlog: outlog.write('\n\nCorrect: %s out of %s (%s)\n\n'%(acc[0],acc[1],float(acc[0])/acc[1]))
@@ -179,12 +181,13 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     lemmatize_input = False
     weights_to_freeze = ['integ.weight','integ_out.weight']
     
-    (trainingsuf,dict,binary,context_size,retrieval_size,vocab_size,emb_size) = settingvars
+    (trainingsuf,dict,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets) = settingvars
     
     out = open('traininglog%s.txt'%modelID,'w')
     out.write('Training set: trainingpairs-%s\n'%trainingsuf)
     out.write('Embeddings: %s\n'%dict)
     out.write('Binary: %s\n'%binary)
+    out.write('Reduce lr: %s\n'%reducelr)
     out.write('Context %s, Retrieval %s\n'%(context_size,retrieval_size))
     out.write('Vocab %s, Embedding %s\n'%(vocab_size,emb_size))
 
@@ -198,7 +201,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     wgt.write('\n\npre training 1\n\n')
     for p in net1.named_parameters(): wgt.write(str(p))
     
-    train(net1,'integ',inputpairs,word2loc,word2dist,matid2mng,labelnum,context_size=context_size,output='dist',outlog=out)
+    train(net1,'integ',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,output='dist',outlog=out,reducelr=reducelr)
 
     wgt.write('\n\npost training 1\n\n')
     for p in net1.named_parameters(): wgt.write(str(p))
@@ -213,7 +216,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 
     print '\n\n\n\nTRAINING PART TWO\n\n\n\n'
     if out: out.write('TRAINING PART TWO\n\n')
-    train(net2,'full',inputpairs,word2loc,word2dist,matid2mng,labelnum,context_size=context_size,vars_to_freeze=weights_to_freeze,output='dist',outlog=out) 
+    train(net2,'full',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,vars_to_freeze=weights_to_freeze,output='dist',outlog=out,reducelr=reducelr) 
 
     wgt.write('\n\npost training 2\n\n')
     for p in net2.named_parameters(): wgt.write(str(p))
@@ -225,17 +228,6 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 
     return net2
     
-modelID = '1d'
-binary = True
-
-context_size = 200
-retrieval_size = 80
-
-dict='brouwerCOALS-100.txt'
-trainingsuf = 'br-origfulldutch'
-
-# dict='brouwerGloVe-100.txt'
-# trainingsuf = 'br-origfulleng'
 
 with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,dict,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
 
@@ -250,7 +242,8 @@ with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,dict,b
 with open('trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
 word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,dict,debug=False,binary=binary)
 
-settingvars = (trainingsuf,dict,binary,context_size,retrieval_size,vocab_size,emb_size)
+epochsets = (maxup,itperup)
+settingvars = (trainingsuf,dict,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets)
 
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 

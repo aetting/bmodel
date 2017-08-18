@@ -123,33 +123,3 @@ class NetFull(nn.Module):
         x = F.sigmoid(self.integ_out(integ_context).add(1))
         
         return x,integ_context,retr_layer
-    
-        
-        
-
-
-
-# ex_inputpairs = [
-# (['the','doctor','served','the','meal'],{'agent':'doctor','patient':'meal','action':'served'},0),
-# (['the','meal','was','served','by','the','doctor'],{'agent':'doctor','patient':'meal','action':'served'},0),
-# (['the','meal','served','the','doctor'],{'agent':'doctor','patient':'meal','action':'served'},1),
-# (['the','doctor','was','served','by','the','meal'],{'agent':'doctor','patient':'meal','action':'served'},1),
-# (['the','player','served','the','doctor'],{'agent':'doctor','patient':'meal','action':'served'},2),
-# (['the','doctor','was','served','by','the','player'],{'agent':'doctor','patient':'meal','action':'served'},2),
-# (['the','doctor','served','the','player'],{'agent':'doctor','patient':'meal','action':'served'},3),
-# (['the','player','was','served','by','the','doctor'],{'agent':'doctor','patient':'meal','action':'served'},3),
-# (['the','player','served','the','meal'],{'agent':'doctor','patient':'meal','action':'served'},4),
-# (['the','meal','was','served','by','the','player'],{'agent':'doctor','patient':'meal','action':'served'},4),
-# (['the','meal','served','the','player'],{'agent':'doctor','patient':'meal','action':'served'},5),
-# (['the','player','was','served','by','the','meal'],{'agent':'doctor','patient':'meal','action':'served'},5),
-# ]
-# 
-# (['the','novel','was','sued','by','the','player'],{'agent':'doctor','patient':'meal','action':'served'},2),
-# (['the','player','sued','the','diagnosis'],{'agent':'doctor','patient':'meal','action':'served'},3),
-# (['the','diagnosis','was','sued','by','the','player'],{'agent':'doctor','patient':'meal','action':'served'},3),
-# (['the','athlete','ran','the','marathon'],{'agent':'doctor','patient':'meal','action':'served'},4),
-# (['the','marathon','was','ran','by','the','athlete'],{'agent':'doctor','patient':'meal','action':'served'},4),
-# (['the','song','made','the','politician'],{'agent':'doctor','patient':'meal','action':'served'},5),
-# (['the','politician','was','made','by','the','song'],{'agent':'doctor','patient':'meal','action':'served'},5)
-
-# ind2mean = {0:'doctor serve meal',1:'meal serve doctor',2:'player serve doctor',3:'doctor serve player',4:'player serve meal',5:'meal serve player'}    
