@@ -1,7 +1,7 @@
 import pickle
 from util_brouwer import *
 
-# meaning_dict_list = read_meaning_dict('sim1-d.csv',dutch=True)
+# meaning_dict_list = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
 # inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list,dutch=True)
 # print len(inputpairs)
 # # 
@@ -14,8 +14,8 @@ from util_brouwer import *
 trainingsufnew = 'br-stereng8k'
 # trainingpairsnew = trainingpairs[8000:]
 
-# with open('trainingpairs-%s'%trainingsufnew,'w') as trainingfilenew: pickle.dump(trainingpairsnew,trainingfilenew,pickle.HIGHEST_PROTOCOL)
-with open('trainingpairs-%s'%trainingsufnew) as trainingfile: trainingpairs = pickle.load(trainingfile)
+# with open('trainingpairs/trainingpairs-%s'%trainingsufnew,'w') as trainingfilenew: pickle.dump(trainingpairsnew,trainingfilenew,pickle.HIGHEST_PROTOCOL)
+with open('trainingpairs/trainingpairs-%s'%trainingsufnew) as trainingfile: trainingpairs = pickle.load(trainingfile)
 for p in trainingpairs: print p
 print len(trainingpairs)
 # 

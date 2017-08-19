@@ -1,19 +1,19 @@
-modelID = '1d-2'
+modelID = 'du-2a'
 
 context_size = 200
 retrieval_size = 80
 
-trainingsuf = 'br-origfulldutch'
+trainingsuf = 'br-sterdutch8k'
 
-maxup = 7000 #7000 in Brouwer
-itperup = 100 #100 in Brouwer
+maxup = 200 #7000 in Brouwer
+itperup = 3 #100 in Brouwer
 
-reducelr = True
+reducelr = False
 
-embdic='brouwerCOALS-100.txt'
+embdic='embs/brouwerCOALS-100.txt'
 binary = True
 
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='Trying reducing learning rate with same settings once more to see how much variation there is from one run to another'
+notes='ster only dutch (testing new directories)'

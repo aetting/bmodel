@@ -73,28 +73,28 @@ def plot_means(meandict,sedict,title,filestr,modelid):
 #     rects = ax.bar(ind, means, width, color='r', yerr=men_std) 
     ax.set_ylabel('Condition')
     ax.set_title(title)
-    ax.set_xticks(ind + width / 2) 
+    ax.set_xticks(ind) 
     ax.set_xticklabels(labels)
-    plt.xlim(xmin=-.1,xmax=3.6,) 
+    plt.xlim(xmin=-.5,xmax=3.5) 
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '1d'
+modelID = 'du-2a'
 
 print 'Loading variables ...'
-with open('settings%s'%modelID) as settings: trainingsuf,dict,binary,context_size,retrieval_size = pickle.load(settings)
-with open('trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
+with open('settings/settings%s'%modelID) as settings: trainingsuf,dict,binary,context_size,retrieval_size = pickle.load(settings)
+with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
 
 word2loc,word2dist,vocab_size,emb_size, = get_vars(trainingpairs,dict,debug=False,binary=binary)
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 
 labelnum = None
 
-meaning_dict_list = read_meaning_dict('sim1-d.csv',dutch=True)
+meaning_dict_list = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
 siminput = generate_hoeks(meaning_dict_list,dutch=True)
 
 netTest = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist')
-loaded_dict = torch.load('modelsave%s'%modelID)
+loaded_dict = torch.load('modelsaves/modelsave%s'%modelID)
 netTest.load_state_dict(loaded_dict)
 
 (n400_means,n400_se),(p600_means,p600_se) = simulate(siminput,netTest,context_size,retrieval_size,word2loc,word2dist,matid2mng)

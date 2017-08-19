@@ -183,7 +183,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     
     (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,notes) = settingvars
     
-    out = open('traininglog%s.txt'%modelID,'w')
+    out = open('traininglogs/traininglog%s.txt'%modelID,'w')
     out.write('Training set: trainingpairs-%s\n'%trainingsuf)
     out.write('Embeddings: %s\n'%embdic)
     out.write('Binary: %s\n'%binary)
@@ -225,15 +225,15 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 #     wgt.close()
     out.close()
     
-    torch.save(net2.state_dict(), 'modelsave%s'%modelID)
+    torch.save(net2.state_dict(), 'modelsaves/modelsave%s'%modelID)
 
     return net2
     
 
 print('\n\nMODEL %s\n\n'%modelID)
-with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
+with open('settings/settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
 
-with open('trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
+with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
 word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 
 epochsets = (maxup,itperup)
