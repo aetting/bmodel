@@ -68,7 +68,7 @@ def check_meaning(meaning_vec,meaningdict,matid2mng):
     normed_out = torch.t(normed_out)
     dots = torch.mm(norm_mat,normed_out)
     maxcos,maxind = torch.max(dots,0)
-    maxind = maxind[0][0]
+    maxind = maxind[0]
         
     top_meaning = id2meaning[maxind]
     if top_meaning['agent'] != meaningdict['agent'] \
