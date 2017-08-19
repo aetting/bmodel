@@ -5,29 +5,25 @@ Reduce lr: True
 Context 200, Retrieval 80
 Vocab 35, Embedding 100
 
+Notes: Trying reducing learning rate with same settings once more to see how much variation
+
 TRAINING PART ONE
 
-3 items per update, 800 total updates
+3 items per update, 200 total updates
 
 NetInteg (
   (integ): Linear (300 -> 200)
   (integ_out): Linear (200 -> 300)
 )
 
-loss: 4.31040075421  lr: 0.2
-loss: 4.32320570946  lr: 0.2
-loss: 4.33232085407  lr: 0.2
-loss: 3.58920083195  lr: 0.2
-loss: 3.86721322685  lr: 0.2
-loss: 3.96248478815  lr: 0.2
-loss: 3.48408930749  lr: 0.2
-loss: 4.32871200517  lr: 0.19
+loss: 4.10207544267  lr: 0.2
+loss: 4.03799079359  lr: 0.2
 
 Correct: 0.0 out of 1.0 (0.0)
 
 TRAINING PART TWO
 
-3 items per update, 800 total updates
+3 items per update, 200 total updates
 
 NetFull (
   (retr): Linear (235 -> 80)
@@ -36,14 +32,8 @@ NetFull (
   (integ_out): Linear (200 -> 300)
 )
 
-loss: 4.70849099755  lr: 0.2
-loss: 4.52234582603  lr: 0.2
-loss: 3.97646772861  lr: 0.2
-loss: 4.12862335145  lr: 0.2
-loss: 4.63305735588  lr: 0.2
-loss: 4.15164253116  lr: 0.2
-loss: 3.89767572284  lr: 0.2
-loss: 4.35544906557  lr: 0.19
+loss: 4.30414918065  lr: 0.2
+loss: 4.09201020002  lr: 0.2
 
 Correct: 0.0 out of 1.0 (0.0)
 

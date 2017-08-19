@@ -15,3 +15,5 @@ binary = True
 
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
+
+notes='Trying reducing learning rate with same settings once more to see how much variation there is from one run to another'

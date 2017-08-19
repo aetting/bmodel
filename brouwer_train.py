@@ -181,7 +181,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     lemmatize_input = False
     weights_to_freeze = ['integ.weight','integ_out.weight']
     
-    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets) = settingvars
+    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,notes) = settingvars
     
     out = open('traininglog%s.txt'%modelID,'w')
     out.write('Training set: trainingpairs-%s\n'%trainingsuf)
@@ -190,6 +190,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     out.write('Reduce lr: %s\n'%reducelr)
     out.write('Context %s, Retrieval %s\n'%(context_size,retrieval_size))
     out.write('Vocab %s, Embedding %s\n'%(vocab_size,emb_size))
+    out.write('\nNotes: %s\n'%(notes))
 
 #     wgt = open('weightcheck%s.txt'%modelID,'w')
     
@@ -229,21 +230,14 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     return net2
     
 
+print('\n\nMODEL %s\n\n'%modelID)
 with open('settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
-
-# meaning_dict_list = read_meaning_dict('sim1.csv')
-# inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list)
-
-# random.shuffle(inputpairs)
-# inputpairs = inputpairs[0:12]
-# origid2meaning = {id:m for _,m,id in inputpairs}
-# for pair in inputpairs: print pair
 
 with open('trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
 word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 
 epochsets = (maxup,itperup)
-settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets)
+settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,notes)
 
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 
