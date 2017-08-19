@@ -1,4 +1,4 @@
-modelID = 'du-2a'
+modelID = '2a'
 
 context_size = 200
 retrieval_size = 80
@@ -16,4 +16,4 @@ binary = True
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='ster only dutch (testing new directories)'
+notes='ster only dutch'
