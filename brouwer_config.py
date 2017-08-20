@@ -5,8 +5,8 @@ retrieval_size = 80
 
 trainingsuf = 'br-sterdutch8k'
 
-maxup = 7000 #7000 in Brouwer
-itperup = 100 #100 in Brouwer
+maxup = 200 #7000 in Brouwer
+itperup = 3 #100 in Brouwer
 
 reducelr = False
 

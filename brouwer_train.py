@@ -111,7 +111,7 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochset
                 label_word_rep = label_word_rep.unsqueeze(0)
                 
                 hidden = repackage_hidden(hidden)
-                out,hidden,_ = net(input_word_rep,hidden)
+                out,hidden,_,_ = net(input_word_rep,hidden)
 #                 out = net(input_word_rep)
 
                 loss = criterion(out, meaning_label)

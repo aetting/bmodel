@@ -74,7 +74,7 @@ class NetInteg(nn.Module):
         #integration output layer: linear with bias of 1, sent through sigmoid activation
         x = F.sigmoid(self.integ_out(integ_context).add(1))
         
-        return x,integ_context,None
+        return x,integ_context,None,None
 
 class NetFull(nn.Module):
 
@@ -108,10 +108,10 @@ class NetFull(nn.Module):
 
 #         retr_layer = x.clone()
 
-        x = F.sigmoid(self.retr_out(retr_layer).add(1))
+        retr_out_layer = F.sigmoid(self.retr_out(retr_layer).add(1))
         #concatenate retrieval output with integ_context
 
-        x = torch.cat((x,integ_context_prev),dim=1)
+        x = torch.cat((retr_out_layer,integ_context_prev),dim=1)
         #integration layer: linear with bias of 1, sent through sigmoid activation
 
         integ_context = F.sigmoid(self.integ(x).add(1))
@@ -122,4 +122,4 @@ class NetFull(nn.Module):
         #integration output layer: linear with bias of 1, sent through sigmoid activation
         x = F.sigmoid(self.integ_out(integ_context).add(1))
         
-        return x,integ_context,retr_layer
+        return x,integ_context,retr_layer,retr_out_layer
