@@ -181,10 +181,11 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     lemmatize_input = False
     weights_to_freeze = ['integ.weight','integ_out.weight']
     
-    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,notes) = settingvars
+    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes) = settingvars
     
     out = open('traininglogs/traininglog%s.txt'%modelID,'w')
     out.write('Training set: trainingpairs-%s\n'%trainingsuf)
+    out.write('Training code: %s\n'%traincode)
     out.write('Embeddings: %s\n'%embdic)
     out.write('Binary: %s\n'%binary)
     out.write('Reduce lr: %s\n'%reducelr)
@@ -197,7 +198,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     net1 = NetInteg(vocab_size,emb_size,context_size,labelnum,input='dist',output = 'dist')
     
     print '\n\nTRAINING PART ONE\n\n'
-    if out: out.write('\nTRAINING PART ONE\n\n')
+    out.write('\nTRAINING PART ONE\n\n')
 
 #     wgt.write('\n\npre training 1\n\n')
 #     for p in net1.named_parameters(): wgt.write(str(p))
@@ -216,7 +217,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 #     for p in net2.named_parameters(): wgt.write(str(p))
 
     print '\n\n\n\nTRAINING PART TWO\n\n\n\n'
-    if out: out.write('TRAINING PART TWO\n\n')
+    out.write('\n\nTRAINING PART TWO\n\n')
     train(net2,'full',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,vars_to_freeze=weights_to_freeze,output='dist',outlog=out,reducelr=reducelr) 
 
 #     wgt.write('\n\npost training 2\n\n')
@@ -229,15 +230,42 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 
     return net2
     
+def p2_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,modelID=''):
+    
+    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes) = settingvars
+    
+    out = open('traininglogs/traininglog%s.txt'%modelID,'w')
+    out.write('Training set: trainingpairs-%s\n'%trainingsuf)
+    out.write('Training code: %s\n'%traincode)
+    out.write('Embeddings: %s\n'%embdic)
+    out.write('Binary: %s\n'%binary)
+    out.write('Reduce lr: %s\n'%reducelr)
+    out.write('Context %s, Retrieval %s\n'%(context_size,retrieval_size))
+    out.write('Vocab %s, Embedding %s\n'%(vocab_size,emb_size))
+    out.write('\nNotes: %s\n'%(notes))
 
-print('\n\nMODEL %s\n\n'%modelID)
+    net2 = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist')
+
+    print '\n\n\nTRAINING PART TWO\n\n\n'
+    out.write('\n\nTRAINING PART TWO\n\n')
+    train(net2,'full',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,output='dist',outlog=out,reducelr=reducelr) 
+
+    out.close()
+    
+    torch.save(net2.state_dict(), 'modelsaves/modelsave%s'%modelID)
+
+    return net2
+    
+
+print('\n\nMODEL %s\n\nTraining on %s with traincode \'%s\'\n\n'%(modelID,trainingsuf,traincode))
+
 with open('settings/settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
 
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
 word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 
 epochsets = (maxup,itperup)
-settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,notes)
+settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes)
 
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 
@@ -248,4 +276,8 @@ labelnum = len(set([l for _,_,l in trainingpairs]))
 
 # train(net,inputpairs,word2loc,word2dist,matid2mng,labelnum,context_size=context_size,input='dist',output='dist')
 
-full_training(trainingpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,modelID=modelID)
+if traincode == 'full':
+    full_training(trainingpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,modelID=modelID)
+elif traincode == 'p2':
+    p2_training(trainingpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,modelID=modelID)
+else: raise Exception('Need valid traincode')

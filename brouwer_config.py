@@ -1,20 +1,22 @@
-modelID = '2a'
+modelID = '3a'
 
 context_size = 200
 retrieval_size = 80
 
-trainingsuf = 'br-sterdutch8k'
+trainingsuf = 'br-origfulldutch'
 
-maxup = 200 #7000 in Brouwer
-itperup = 3 #100 in Brouwer
+maxup = 7000 #7000 in Brouwer
+itperup = 100 #100 in Brouwer
 
 reducelr = False
 
 embdic='embs/brouwerCOALS-100.txt'
 binary = True
 
+traincode='p2'
+
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='stereotypical 8k only dutch'
+notes='train full model without integration-only training phase'
 
