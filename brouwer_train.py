@@ -168,8 +168,10 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochset
 
                 if reducelr:
                     if num_updates % 700 == 0: lr *= .95
-                if num_updates >= max_updates and batchloss < prev_batchloss: 
+                if (num_updates >= max_updates) and (batchloss < prev_batchloss): 
+                    print 'lastloss: %s lr: %s update: %s'%(batchloss,lr,num_updates)
                     print 'Correct: %s out of %s (%s)'%(acc[0],acc[1],float(acc[0])/acc[1])
+                    if outlog: outlog.write('\nlastloss: %s lr: %s update: %s'%(batchloss,lr,num_updates))
                     if outlog: outlog.write('\n\nCorrect: %s out of %s (%s)\n\n'%(acc[0],acc[1],float(acc[0])/acc[1]))
                     break
                 prev_batchloss = batchloss

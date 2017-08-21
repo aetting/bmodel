@@ -1,16 +1,17 @@
-modelID = '3b'
+modelID = 'test'
 
 context_size = 200
 retrieval_size = 80
 
-trainingsuf = 'br-sterdutch8k'
+trainingsuf = 'br-origfulldutch'
+# trainingsuf = 'br-sterdutch8k'
 
 traincode='p2'
 
-maxup = 3000 #7000 in Brouwer
-itperup = 100 #100 in Brouwer
+maxup = 20 #7000 in Brouwer
+itperup = 50 #100 in Brouwer
 
-reducelr = True
+reducelr = False
 
 embdic='embs/brouwerCOALS-100.txt'
 binary = True
