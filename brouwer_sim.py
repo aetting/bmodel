@@ -28,7 +28,7 @@ def simulate(inputpairs,trained_model,context_size,retrieval_size,word2loc,word2
             input_word_rep = get_word_rep(word,word2loc)
             input_word_rep = input_word_rep.unsqueeze(0)
             hidden = repackage_hidden(hidden)
-            out,hidden,retr = trained_model(input_word_rep,hidden)
+            out,hidden,retr,retrout = trained_model(input_word_rep,hidden)
             if i == (len(sentence) - 2):
 #                 print 'is the PREV WORD'
                 integ_prev = hidden.clone()
@@ -79,7 +79,7 @@ def plot_means(meandict,sedict,title,filestr,modelid):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = 'du-2a'
+modelID = '3a'
 
 print 'Loading variables ...'
 with open('settings/settings%s'%modelID) as settings: trainingsuf,dict,binary,context_size,retrieval_size = pickle.load(settings)

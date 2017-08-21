@@ -1,0 +1,95 @@
+Training set: trainingpairs-br-sterdutch8k
+Embeddings: embs/brouwerCOALS-100.txt
+Binary: True
+Reduce lr: False
+Context 200, Retrieval 80
+Vocab 35, Embedding 100
+
+Notes: stereotypical 8k only dutch
+
+TRAINING PART ONE
+
+100 items per update, 3000 total updates
+
+NetInteg (
+  (integ): Linear (300 -> 200)
+  (integ_out): Linear (200 -> 300)
+)
+
+loss: 37.4157588719  lr: 0.2
+loss: 20.0122891706  lr: 0.2
+loss: 20.2159512085  lr: 0.2
+loss: 20.0625719202  lr: 0.2
+loss: 19.9065278596  lr: 0.2
+loss: 20.5455412982  lr: 0.2
+loss: 20.042509128  lr: 0.2
+loss: 20.3471494807  lr: 0.2
+loss: 20.1735228314  lr: 0.2
+loss: 20.0465873091  lr: 0.2
+loss: 19.9431054067  lr: 0.2
+loss: 19.6616372821  lr: 0.2
+loss: 19.9976474443  lr: 0.2
+loss: 20.1249300538  lr: 0.2
+loss: 20.2361701551  lr: 0.2
+loss: 20.2232769594  lr: 0.2
+loss: 20.1568681449  lr: 0.2
+loss: 20.3391933767  lr: 0.2
+loss: 20.2560545005  lr: 0.2
+loss: 20.3455609479  lr: 0.2
+loss: 20.1807737041  lr: 0.2
+loss: 20.3244855278  lr: 0.2
+loss: 20.189222888  lr: 0.2
+loss: 19.9635773076  lr: 0.2
+loss: 20.1300724828  lr: 0.2
+loss: 19.9777138304  lr: 0.2
+loss: 19.7969620271  lr: 0.2
+loss: 20.0785174179  lr: 0.2
+loss: 20.0425356403  lr: 0.2
+loss: 20.3856929027  lr: 0.2
+
+Correct: 8000 out of 8000 (1.0)
+
+TRAINING PART TWO
+
+100 items per update, 3000 total updates
+
+NetFull (
+  (retr): Linear (235 -> 80)
+  (retr_out): Linear (80 -> 100)
+  (integ): Linear (300 -> 200)
+  (integ_out): Linear (200 -> 300)
+)
+
+loss: 94.6913130255  lr: 0.2
+loss: 20.3856858723  lr: 0.2
+loss: 20.0002480718  lr: 0.2
+loss: 20.050410748  lr: 0.2
+loss: 20.1314123963  lr: 0.2
+loss: 20.244561862  lr: 0.2
+loss: 20.1629602266  lr: 0.2
+loss: 20.0238090036  lr: 0.2
+loss: 20.1793119182  lr: 0.2
+loss: 20.0628612719  lr: 0.2
+loss: 19.9450490114  lr: 0.2
+loss: 19.9957603064  lr: 0.2
+loss: 20.0092534783  lr: 0.2
+loss: 19.8632958356  lr: 0.2
+loss: 20.0095410187  lr: 0.2
+loss: 20.0085046648  lr: 0.2
+loss: 20.0201719875  lr: 0.2
+loss: 19.8192688828  lr: 0.2
+loss: 20.0578820387  lr: 0.2
+loss: 19.5737609033  lr: 0.2
+loss: 19.6580457016  lr: 0.2
+loss: 20.0264993502  lr: 0.2
+loss: 19.6460834184  lr: 0.2
+loss: 19.9817352917  lr: 0.2
+loss: 19.921856285  lr: 0.2
+loss: 19.8858314667  lr: 0.2
+loss: 20.1375878771  lr: 0.2
+loss: 19.7764407867  lr: 0.2
+loss: 19.9852709252  lr: 0.2
+loss: 19.7312708233  lr: 0.2
+
+Correct: 8000 out of 8000 (1.0)
+
