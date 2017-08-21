@@ -11,7 +11,7 @@ Notes: full model only training with stereotypical only
 
 TRAINING PART TWO
 
-100 items per update, 7000 total updates
+1 items per update, 2 total updates
 
 NetFull (
   (retr): Linear (235 -> 80)
@@ -19,3 +19,7 @@ NetFull (
   (integ): Linear (300 -> 200)
   (integ_out): Linear (200 -> 300)
 )
+
+
+Correct: 0.0 out of 1.0 (0.0)
+

@@ -72,10 +72,12 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochset
     num_sents = 0
     num_words = 0
     acc = (0.0,1.0)
+    batchloss = 0
     cumloss = 0
+    prev_batchloss = None
     
     lr = .2
-    while num_updates < max_updates: 
+    while ((num_updates < max_updates) or (batchloss > prev_batchloss)): 
         random.shuffle(inputpairs)
         tot = 0
         corr = 0
@@ -147,6 +149,7 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochset
             if num_sents % items_per_update == 0: 
 #                     optimizer.step()
 #                 print 'PARAMETERS'
+                batchloss = cumloss
                 next_prev = []
                 for parind,p in enumerate(to_update):
 #                     print p
@@ -159,17 +162,18 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochset
                 net.zero_grad()
                 num_updates += 1
 
-                if (num_updates % 100 == 0): print 'loss: %s lr: %s update: %s'%(cumloss,lr,num_updates)
-                if outlog and (num_updates % 100 == 0): outlog.write('\nloss: %s  lr: %s'%(cumloss,lr))
+                if (num_updates % 100 == 0): print 'loss: %s lr: %s update: %s'%(batchloss,lr,num_updates)
+                if outlog and (num_updates % 100 == 0): outlog.write('\nloss: %s  lr: %s'%(batchloss,lr))
                 
-                cumloss = 0
 
                 if reducelr:
                     if num_updates % 700 == 0: lr *= .95
-                if num_updates == max_updates: 
+                if num_updates >= max_updates and batchloss < prev_batchloss: 
                     print 'Correct: %s out of %s (%s)'%(acc[0],acc[1],float(acc[0])/acc[1])
                     if outlog: outlog.write('\n\nCorrect: %s out of %s (%s)\n\n'%(acc[0],acc[1],float(acc[0])/acc[1]))
                     break
+                prev_batchloss = batchloss
+                cumloss = 0
 
         acc = (corr,tot)
         s = 1

@@ -7,7 +7,7 @@ trainingsuf = 'br-sterdutch8k'
 
 traincode='p2'
 
-maxup = 7000 #7000 in Brouwer
+maxup = 3000 #7000 in Brouwer
 itperup = 100 #100 in Brouwer
 
 reducelr = True
