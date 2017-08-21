@@ -1,14 +1,14 @@
-modelID = '3c'
+modelID = '3a'
 
 context_size = 200
 retrieval_size = 80
 
-#trainingsuf = 'br-origfulldutch'
-trainingsuf = 'br-nonsterdutch8k'
+trainingsuf = 'br-origfulldutch'
+#trainingsuf = 'br-nonsterdutch8k'
 
 traincode='p2'
 
-maxup = 10000 #7000 in Brouwer
+maxup = 7000 #7000 in Brouwer
 itperup = 100 #100 in Brouwer
 
 reducelr = False
