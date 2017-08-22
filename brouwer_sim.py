@@ -60,7 +60,7 @@ def simulate(inputpairs,trained_model,context_size,retrieval_size,word2loc,word2
 
     return (n400_means,n400_se),(p600_means,p600_se)
     
-def plot_means(meandict,sedict,title,filestr,modelid):
+def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     labels = ['passive','reversal','mis-pass','mis-act']
     means = [meandict[k] for k in labels]
     se = [sedict[k] for k in labels]
@@ -69,7 +69,7 @@ def plot_means(meandict,sedict,title,filestr,modelid):
     width = 0.5 
     
     fig, ax = plt.subplots()
-    rects = ax.bar(ind, means, width, yerr=se,error_kw={'ecolor':'black'})
+    rects = ax.bar(ind, means, width, color=color,yerr=se,error_kw={'ecolor':'black'})
 #     rects = ax.bar(ind, means, width, color='r', yerr=men_std) 
     ax.set_ylabel('Condition')
     ax.set_title(title)
@@ -79,13 +79,15 @@ def plot_means(meandict,sedict,title,filestr,modelid):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '3c'
+modelID = '1r'
 
 print 'Loading variables ...'
-with open('settings/settings%s'%modelID) as settings: trainingsuf,dict,binary,context_size,retrieval_size = pickle.load(settings)
+with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size = pickle.load(settings)
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
 
-word2loc,word2dist,vocab_size,emb_size, = get_vars(trainingpairs,dict,debug=False,binary=binary)
+if not embdic.startswith('embs'): embdic = 'embs/%s'%embdic
+
+word2loc,word2dist,vocab_size,emb_size, = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 
 labelnum = None
@@ -105,6 +107,6 @@ print p600_se
 
 # n400means = {'passive': 0.33484166912370306, 'mis-pass': 0.48263581026787927, 'mis-act': 0.45988320220812245, 'reversal': 0.34160386911697888}
 plot_means(n400_means,n400_se,'N400 means','N400',modelID)
-plot_means(p600_means,p600_se,'P600 means','P600',modelID)
+plot_means(p600_means,p600_se,'P600 means','P600',modelID,color='peru')
 
 # print cos_dist(np.array([1,0,3]),np.array([1,2,3]))
