@@ -83,7 +83,7 @@ def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '2a'
+modelID = '4a'
 
 print 'Loading variables ...'
 with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size = pickle.load(settings)
@@ -102,7 +102,7 @@ print len(mat)
 
 labelnum = None
 
-meaning_dict_list = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
+meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
 siminput = generate_hoeks(meaning_dict_list,dutch=True)
 
 netTest = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist')
