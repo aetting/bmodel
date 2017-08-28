@@ -1,0 +1,180 @@
+Training set: trainingpairs-br-holdout-dutch
+Training code: full
+Embeddings: embs/brouwerCOALS-100.txt
+Binary: True
+Reduce lr: False
+Context 200, Retrieval 80
+Vocab 35, Embedding 100
+
+Notes: train on holdout data: stereotypical sentences are passive only, and all-combinations has no sentences, active or passive, from the simulation triplets
+
+TRAINING PART ONE
+
+100 items per update, 7000 total updates
+
+NetInteg (
+  (integ): Linear (300 -> 200)
+  (integ_out): Linear (200 -> 300)
+)
+
+loss: 123.667366669  lr: 0.2
+loss: 97.8925931593  lr: 0.2
+loss: 89.2090821657  lr: 0.2
+loss: 78.7221781921  lr: 0.2
+loss: 88.6673944194  lr: 0.2
+loss: 76.5340516852  lr: 0.2
+loss: 77.549141973  lr: 0.2
+loss: 77.7786508607  lr: 0.2
+loss: 69.0697205434  lr: 0.2
+loss: 72.7500746801  lr: 0.2
+loss: 74.7241126774  lr: 0.2
+loss: 74.8641522282  lr: 0.2
+loss: 69.5511790241  lr: 0.2
+loss: 66.0774431221  lr: 0.2
+loss: 66.7991445328  lr: 0.2
+loss: 67.8151549334  lr: 0.2
+loss: 69.2918658601  lr: 0.2
+loss: 74.7698387939  lr: 0.2
+loss: 76.7071138827  lr: 0.2
+loss: 65.5250447374  lr: 0.2
+loss: 63.4499445306  lr: 0.2
+loss: 66.3191637591  lr: 0.2
+loss: 65.7056218676  lr: 0.2
+loss: 67.3490815368  lr: 0.2
+loss: 70.8097114362  lr: 0.2
+loss: 73.2858427707  lr: 0.2
+loss: 64.7211050444  lr: 0.2
+loss: 68.2027719554  lr: 0.2
+loss: 70.4047739639  lr: 0.2
+loss: 62.4158084385  lr: 0.2
+loss: 61.7526089602  lr: 0.2
+loss: 67.4345444771  lr: 0.2
+loss: 67.5295035952  lr: 0.2
+loss: 72.0762266473  lr: 0.2
+loss: 65.0267037433  lr: 0.2
+loss: 66.2091858158  lr: 0.2
+loss: 68.8631146832  lr: 0.2
+loss: 69.4833435903  lr: 0.2
+loss: 70.2121461115  lr: 0.2
+loss: 68.3719020798  lr: 0.2
+loss: 66.6596302706  lr: 0.2
+loss: 68.932733908  lr: 0.2
+loss: 73.3211901451  lr: 0.2
+loss: 65.5133054742  lr: 0.2
+loss: 71.4576525517  lr: 0.2
+loss: 72.0407296269  lr: 0.2
+loss: 68.5053094787  lr: 0.2
+loss: 71.2404122666  lr: 0.2
+loss: 70.6413288  lr: 0.2
+loss: 72.6601855527  lr: 0.2
+loss: 69.0734632356  lr: 0.2
+loss: 69.1865185386  lr: 0.2
+loss: 70.6148755948  lr: 0.2
+loss: 67.4108683851  lr: 0.2
+loss: 70.1767537728  lr: 0.2
+loss: 71.5459674773  lr: 0.2
+loss: 63.1459514822  lr: 0.2
+loss: 69.5379932333  lr: 0.2
+loss: 68.7161443101  lr: 0.2
+loss: 67.5214333002  lr: 0.2
+loss: 68.9330529389  lr: 0.2
+loss: 63.4749590894  lr: 0.2
+loss: 68.4150986599  lr: 0.2
+loss: 66.5427502321  lr: 0.2
+loss: 64.5056443001  lr: 0.2
+loss: 65.7016802995  lr: 0.2
+loss: 66.2551734253  lr: 0.2
+loss: 75.0643875373  lr: 0.2
+loss: 65.4614064479  lr: 0.2
+loss: 68.708798209  lr: 0.2
+lastloss: 63.9449832494 lr: 0.2 update: 7002
+
+Correct: 11880 out of 11880 (1.0)
+
+
+
+TRAINING PART TWO
+
+100 items per update, 7000 total updates
+
+NetFull (
+  (retr): Linear (235 -> 80)
+  (retr_out): Linear (80 -> 100)
+  (integ): Linear (300 -> 200)
+  (integ_out): Linear (200 -> 300)
+)
+
+loss: 143.799640656  lr: 0.2
+loss: 140.330982506  lr: 0.2
+loss: 133.102627501  lr: 0.2
+loss: 109.676786198  lr: 0.2
+loss: 92.3479224616  lr: 0.2
+loss: 68.1440087397  lr: 0.2
+loss: 66.7356510289  lr: 0.2
+loss: 65.9018859569  lr: 0.2
+loss: 67.4524791465  lr: 0.2
+loss: 70.6266895308  lr: 0.2
+loss: 59.6099618082  lr: 0.2
+loss: 69.2494032395  lr: 0.2
+loss: 64.6557980633  lr: 0.2
+loss: 67.304189302  lr: 0.2
+loss: 68.6542917047  lr: 0.2
+loss: 66.1328904215  lr: 0.2
+loss: 71.4608971829  lr: 0.2
+loss: 67.411006604  lr: 0.2
+loss: 71.9301171134  lr: 0.2
+loss: 66.6008214499  lr: 0.2
+loss: 60.4251925122  lr: 0.2
+loss: 68.2263271152  lr: 0.2
+loss: 67.1035487205  lr: 0.2
+loss: 62.8363103604  lr: 0.2
+loss: 65.7507378921  lr: 0.2
+loss: 69.1783744858  lr: 0.2
+loss: 65.633272564  lr: 0.2
+loss: 70.4428319949  lr: 0.2
+loss: 69.5508166153  lr: 0.2
+loss: 59.9635207954  lr: 0.2
+loss: 64.6315875259  lr: 0.2
+loss: 69.1750112068  lr: 0.2
+loss: 63.6701493374  lr: 0.2
+loss: 71.8516342609  lr: 0.2
+loss: 65.4030070664  lr: 0.2
+loss: 65.0126432284  lr: 0.2
+loss: 66.6093183557  lr: 0.2
+loss: 68.5799118331  lr: 0.2
+loss: 66.708295218  lr: 0.2
+loss: 64.1150511328  lr: 0.2
+loss: 66.4698838511  lr: 0.2
+loss: 67.3913966902  lr: 0.2
+loss: 66.9589241184  lr: 0.2
+loss: 67.6375449564  lr: 0.2
+loss: 69.5726915262  lr: 0.2
+loss: 61.9936654987  lr: 0.2
+loss: 71.2396057776  lr: 0.2
+loss: 68.5636548498  lr: 0.2
+loss: 70.8041230198  lr: 0.2
+loss: 67.1382753942  lr: 0.2
+loss: 63.8115084288  lr: 0.2
+loss: 63.4998010765  lr: 0.2
+loss: 62.9800603563  lr: 0.2
+loss: 66.2711054468  lr: 0.2
+loss: 71.7820155154  lr: 0.2
+loss: 66.3392301856  lr: 0.2
+loss: 69.7403703072  lr: 0.2
+loss: 68.6231917333  lr: 0.2
+loss: 65.3585126233  lr: 0.2
+loss: 70.8544523894  lr: 0.2
+loss: 68.2392990265  lr: 0.2
+loss: 61.7871771197  lr: 0.2
+loss: 68.8587908355  lr: 0.2
+loss: 68.731770474  lr: 0.2
+loss: 67.7619978569  lr: 0.2
+loss: 64.8848942558  lr: 0.2
+loss: 67.8942153684  lr: 0.2
+loss: 70.0758583882  lr: 0.2
+loss: 68.2749091825  lr: 0.2
+loss: 65.1598924911  lr: 0.2
+lastloss: 65.1598924911 lr: 0.2 update: 7000
+
+Correct: 11880 out of 11880 (1.0)
+
