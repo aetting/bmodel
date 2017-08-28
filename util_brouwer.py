@@ -135,7 +135,10 @@ def generate_brouwer_train_sentences(meaning_dict_list,triplets,holdout=False,du
                 inputpairs.append((passive,meaning,i))
                 id2meaning[i] = meaning 
                 i += 1
-    num_each_ster = (len(inputpairs)/2)/len(meaning_dict_list) 
+    if holdout:
+        num_each_ster = (len(inputpairs))/len(meaning_dict_list)
+    else:
+        num_each_ster = (len(inputpairs)/2)/len(meaning_dict_list) 
     print 'all-comb len: %s'%len(inputpairs)
     print 'num each ster: %s'%num_each_ster   
     sters = []

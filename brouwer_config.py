@@ -1,10 +1,10 @@
-modelID = '4a'
+modelID = '4b'
 
 context_size = 200
 retrieval_size = 80
 
 # trainingsuf = 'br-origfulldutch'
-trainingsuf = 'br-holdout-dutch'
+trainingsuf = 'br-holdoutB-dutch'
 #trainingsuf = 'br-nonsterdutch8k'
 
 traincode='full'
@@ -20,4 +20,4 @@ binary = True
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='train on holdout data: stereotypical sentences are passive only, and all-combinations has no sentences, active or passive, from the simulation triplets'
+notes='train on holdout data: stereotypical sentences are active only (as before, but now make up full half of data), and all-combinations has no sentences, active or passive, from the simulation triplets'

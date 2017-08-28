@@ -1,19 +1,20 @@
 import pickle
 from util_brouwer import *
 
-# meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
-# print triplets
-# inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list,triplets,dutch=True,holdout=True)
-# print len(inputpairs)
+meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
+print triplets
+inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list,triplets,dutch=True,holdout=True)
+print len(inputpairs)
 # with open('textcheck.txt','w') as out:
 #     for s,_,_ in inputpairs: out.write(' '.join(s) + '\n')
 # # 
-trainingsuf = 'br-holdout-dutch'
+trainingsuf = 'br-holdoutB-dutch'
 # 
 # with open('trainingpairs/trainingpairs-%s'%trainingsuf,'w') as trainingfile: pickle.dump(inputpairs,trainingfile,pickle.HIGHEST_PROTOCOL)
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as trainingfile: trainingpairs = pickle.load(trainingfile)
 with open('textcheck.txt','w') as out:
     for s,_,_ in trainingpairs: out.write(' '.join(s) + '\n')
+print len(trainingpairs)
 
 # trainingsufnew = 'br-stereng8k'
 # trainingpairsnew = trainingpairs[8000:]

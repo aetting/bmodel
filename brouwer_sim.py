@@ -41,7 +41,6 @@ def simulate(inputpairs,trained_model,context_size,retrieval_size,word2loc,word2
             guess = '%s %s %s'%(topmng['agent'],topmng['action'],topmng['patient'])
 #             print 'GUESS %s'%guess
         if ans: 
-            print cond
             corr += 1
         else:
             print sentence
