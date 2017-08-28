@@ -16,7 +16,7 @@ def simulate(inputpairs,trained_model,context_size,retrieval_size,word2loc,word2
     for sentence,meaningdict,cond in inputpairs:
         tot += 1
         if cond not in results: results[cond] = []
-        print '\n' + ' '.join(sentence)
+#         print '\n' + ' '.join(sentence)
         meaning_label = get_meaning_label(meaningdict,word2dist)
         meaning_label = meaning_label.unsqueeze(0)
         
@@ -24,7 +24,7 @@ def simulate(inputpairs,trained_model,context_size,retrieval_size,word2loc,word2
         hidden = Variable(torch.Tensor(1,context_size).fill_(.5))
 #         meaning_label = get_meaning_label(meaningdict,word2dist,voice,lemmatize = lemmatize_label)
         for i,word in enumerate(sentence):
-            print word
+#             print word
             input_word_rep = get_word_rep(word,word2loc)
             input_word_rep = input_word_rep.unsqueeze(0)
             hidden = repackage_hidden(hidden)
@@ -41,7 +41,11 @@ def simulate(inputpairs,trained_model,context_size,retrieval_size,word2loc,word2
             guess = '%s %s %s'%(topmng['agent'],topmng['action'],topmng['patient'])
 #             print 'GUESS %s'%guess
         if ans: 
+            print cond
             corr += 1
+        else:
+            print sentence
+            print ' '.join([topmng['agent'],topmng['action'],topmng['patient']])
 
         n400 = cos_dist(retr_prev.data[0].numpy(),retr_targ.data[0].numpy())
         p600 = cos_dist(integ_prev.data[0].numpy(),integ_targ.data[0].numpy())
@@ -79,7 +83,7 @@ def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '1r'
+modelID = '2a'
 
 print 'Loading variables ...'
 with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size = pickle.load(settings)
@@ -88,7 +92,13 @@ with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpa
 if not embdic.startswith('embs'): embdic = 'embs/%s'%embdic
 
 word2loc,word2dist,vocab_size,emb_size, = get_vars(trainingpairs,embdic,debug=False,binary=binary)
-matid2mng = get_meaning_matrix(trainingpairs,word2dist)
+
+trainingsuf2 = 'br-origfulldutch'
+with open('trainingpairs/trainingpairs-%s'%trainingsuf2) as inputfile: trainingpairs2 = pickle.load(inputfile)
+matid2mng = get_meaning_matrix(trainingpairs2,word2dist)
+
+mat,_ = matid2mng
+print len(mat)
 
 labelnum = None
 

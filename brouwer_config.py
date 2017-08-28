@@ -1,9 +1,10 @@
-modelID = '1r'
+modelID = '4a'
 
 context_size = 200
 retrieval_size = 80
 
-trainingsuf = 'br-origfulldutch'
+# trainingsuf = 'br-origfulldutch'
+trainingsuf = 'br-holdout-dutch'
 #trainingsuf = 'br-nonsterdutch8k'
 
 traincode='full'
@@ -19,4 +20,4 @@ binary = True
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='full model full training again to re-check replication'
+notes='train on holdout data: stereotypical sentences are passive only, and all-combinations has no sentences, active or passive, from the simulation triplets'

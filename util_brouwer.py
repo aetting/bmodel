@@ -81,17 +81,23 @@ def check_meaning(meaning_vec,meaningdict,matid2mng):
             
 def read_meaning_dict(filename,dutch=False):
     meaning_dict_list = []
+    triplets = []
     with open(filename,'rU') as file:
         for line in file:
             meaning_dict = {}
+            linesplit = line.strip().split(',')
+            triplet_ster = tuple(linesplit[0:3])
+            triplet_mis = tuple(linesplit[0:2]+[linesplit[3]])
             if dutch:
                 meaning_dict['agent'],meaning_dict['patient'],meaning_dict['action'],meaning_dict['action-mis'],meaning_dict['patdet'] = line.strip().split(',')
             else:
                 meaning_dict['agent'],meaning_dict['patient'],meaning_dict['action'],meaning_dict['action-mis'] = line.strip().split(',')
             meaning_dict_list.append(meaning_dict)
-    return meaning_dict_list
+            triplets.append(triplet_ster)
+            triplets.append(triplet_mis)
+    return meaning_dict_list,triplets
 
-def generate_brouwer_train_sentences(meaning_dict_list,dutch=False):
+def generate_brouwer_train_sentences(meaning_dict_list,triplets,holdout=False,dutch=False):
     #***TODO figure out whether embeddings should be lemma***
     if dutch:
         activestr = '%s heeft %s %s'
@@ -111,6 +117,12 @@ def generate_brouwer_train_sentences(meaning_dict_list,dutch=False):
     for action in allverbs:
         for ag in allnouns:
             for pa in allnouns:
+                if dutch: trip = (ag.split()[1],pa.split()[1],action)
+                else: trip = (ag,pa,action)
+                trip_rev = (trip[1],trip[0],trip[2])
+                if holdout:
+                    if trip in triplets or trip_rev in triplets: 
+                        continue
                 if dutch:
                     meaning = {'agent':ag.split()[1],'patient':pa.split()[1],'action':action}
                 else:    
@@ -123,7 +135,9 @@ def generate_brouwer_train_sentences(meaning_dict_list,dutch=False):
                 inputpairs.append((passive,meaning,i))
                 id2meaning[i] = meaning 
                 i += 1
-    num_each_ster = (len(inputpairs)/2)/len(meaning_dict_list)    
+    num_each_ster = (len(inputpairs)/2)/len(meaning_dict_list) 
+    print 'all-comb len: %s'%len(inputpairs)
+    print 'num each ster: %s'%num_each_ster   
     sters = []
     for meaning in meaning_dict_list:
         if dutch:
@@ -135,7 +149,8 @@ def generate_brouwer_train_sentences(meaning_dict_list,dutch=False):
         active = active.split()
         passive = passive.split()
         sters.append((active,meaning,i))
-        sters.append((passive,meaning,i))
+        if not holdout: 
+            sters.append((passive,meaning,i))
         id2meaning[i] = meaning
         i += 1
     sters = sters * num_each_ster
