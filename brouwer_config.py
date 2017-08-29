@@ -20,4 +20,4 @@ binary = True
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='train on holdout data B (e:ven halves), this time with reducing lr in case it helps the erratic loss'
+notes='train on holdout data B (even halves), this time with reducing lr in case it helps the erratic loss'
