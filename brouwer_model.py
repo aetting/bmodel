@@ -44,15 +44,14 @@ class testNet(nn.Module):
         
 class NetInteg(nn.Module):
 
-    def __init__(self,vocab_size,emb_size,context_size,labelnum,input='dist',output = 'dist'):
+    def __init__(self,vocab_size,emb_size,context_size,labelnum,output='dist',tryloc=False):
         super(NetInteg, self).__init__() #TODO understand this better
 #         self.nonlin1 = nn.Tanh()
 #         self.nonlin2 = nn.Sigmoid()
-        if input == 'dist':
-            self.integ = nn.Linear(context_size+emb_size,context_size, bias=False)
-        elif input == 'loc':
+        if tryloc: 
             self.integ = nn.Linear(context_size+vocab_size,context_size, bias=False)
-        else: raise Exception('Invalid input type!')
+        else:
+            self.integ = nn.Linear(context_size+emb_size,context_size, bias=False)
         
         if output == 'loc':
             self.integ_out = nn.Linear(context_size,3*vocab_size, bias=False)
@@ -78,14 +77,18 @@ class NetInteg(nn.Module):
 
 class NetFull(nn.Module):
 
-    def __init__(self,vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist'):
+    def __init__(self,vocab_size,emb_size,context_size,retrieval_size,labelnum,output='dist',tryloc=False):
         super(NetFull, self).__init__() #TODO understand this better
 #         self.logist = nn.Sigmoid()
 #         self.soft = nn.Softmax()
         self.retr = nn.Linear(context_size+vocab_size,retrieval_size, bias=False)
-        self.retr_out = nn.Linear(retrieval_size,emb_size, bias=False)
         
-        self.integ = nn.Linear(context_size+emb_size,context_size, bias=False)
+        if tryloc:
+            self.retr_out = nn.Linear(retrieval_size,vocab_size, bias=False)
+            self.integ = nn.Linear(context_size+vocab_size,context_size, bias=False)
+        else:
+            self.retr_out = nn.Linear(retrieval_size,emb_size, bias=False)
+            self.integ = nn.Linear(context_size+emb_size,context_size, bias=False)
         
         if output == 'loc':
             self.integ_out = nn.Linear(context_size,3*vocab_size, bias=False)

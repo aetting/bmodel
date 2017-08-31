@@ -74,18 +74,19 @@ def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     fig, ax = plt.subplots()
     rects = ax.bar(ind, means, width, color=color,yerr=se,error_kw={'ecolor':'black'})
 #     rects = ax.bar(ind, means, width, color='r', yerr=men_std) 
-    ax.set_ylabel('Condition')
-    ax.set_title(title)
+#     ax.set_xlabel('Condition',size='large')
+#     ax.set_title(title,size=20)
     ax.set_xticks(ind) 
-    ax.set_xticklabels(labels)
+    ax.set_xticklabels(labels,size=19)
     plt.xlim(xmin=-.5,xmax=3.5) 
+    plt.tick_params(axis='y', which='major', labelsize=16)
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '4c'
+modelID = '5a'
 
 print 'Loading variables ...'
-with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size = pickle.load(settings)
+with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size,tryloc = pickle.load(settings)
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
 
 if not embdic.startswith('embs'): embdic = 'embs/%s'%embdic
@@ -104,7 +105,7 @@ labelnum = None
 meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
 siminput = generate_hoeks(meaning_dict_list,dutch=True)
 
-netTest = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist')
+netTest = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output='dist',tryloc=tryloc)
 loaded_dict = torch.load('modelsaves/modelsave%s'%modelID)
 netTest.load_state_dict(loaded_dict)
 
@@ -115,7 +116,7 @@ print p600_means
 print p600_se
 
 # n400means = {'passive': 0.33484166912370306, 'mis-pass': 0.48263581026787927, 'mis-act': 0.45988320220812245, 'reversal': 0.34160386911697888}
-plot_means(n400_means,n400_se,'N400 means','N400',modelID)
-plot_means(p600_means,p600_se,'P600 means','P600',modelID,color='peru')
+plot_means(n400_means,n400_se,'N400 amplitudes','N400',modelID)
+plot_means(p600_means,p600_se,'P600 amplitudes','P600',modelID,color='peru')
 
 # print cos_dist(np.array([1,0,3]),np.array([1,2,3]))

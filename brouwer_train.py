@@ -34,7 +34,8 @@ def get_weight_update(gradient,prev_update,lr,alpha):
     update = t1+t2
     return update
     
-def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochsets,context_size=200,vars_to_freeze=None,lemmatize_label=False,lemmatize_input=False,output='dist',outlog=None,reducelr=False):
+def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochsets,context_size=200,vars_to_freeze=None,
+lemmatize_label=False,lemmatize_input=False,output='dist',outlog=None,reducelr=False,tryloc=False):
     num_items = 0
     num_updates = 0
     
@@ -45,7 +46,10 @@ def train(net,phase,inputpairs_orig,word2loc,word2dist,matid2mng,labnum,epochset
     if outlog: outlog.write('%s items per update, %s total updates\n'%(items_per_update,max_updates))
     
     if phase == 'integ':
-        input_word_dict = word2dist
+        if tryloc:
+            input_word_dict = word2loc
+        else:
+            input_word_dict = word2dist
     elif phase == 'full':
         input_word_dict = word2loc
     else:
@@ -187,7 +191,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
     lemmatize_input = False
     weights_to_freeze = ['integ.weight','integ_out.weight']
     
-    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes) = settingvars
+    (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes,tryloc) = settingvars
     
     out = open('traininglogs/traininglog%s.txt'%modelID,'w')
     out.write('Training set: trainingpairs-%s\n'%trainingsuf)
@@ -201,7 +205,7 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 
 #     wgt = open('weightcheck%s.txt'%modelID,'w')
     
-    net1 = NetInteg(vocab_size,emb_size,context_size,labelnum,input='dist',output = 'dist')
+    net1 = NetInteg(vocab_size,emb_size,context_size,labelnum,output='dist',tryloc=tryloc)
     
     print '\n\nTRAINING PART ONE\n\n'
     out.write('\nTRAINING PART ONE\n\n')
@@ -209,12 +213,12 @@ def full_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,m
 #     wgt.write('\n\npre training 1\n\n')
 #     for p in net1.named_parameters(): wgt.write(str(p))
     
-    train(net1,'integ',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,output='dist',outlog=out,reducelr=reducelr)
+    train(net1,'integ',inputpairs,word2loc,word2dist,matid2mng,labelnum,epochsets,context_size=context_size,output='dist',outlog=out,reducelr=reducelr,tryloc=tryloc)
 
 #     wgt.write('\n\npost training 1\n\n')
 #     for p in net1.named_parameters(): wgt.write(str(p))
 
-    net2 = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output = 'dist')
+    net2 = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output='dist',tryloc=tryloc)
 
     insert_saved_weights(net2,net1.state_dict(),weights_to_freeze)
     freeze_weights(net2,weights_to_freeze)
@@ -265,13 +269,13 @@ def p2_training(inputpairs,word2loc,word2dist,settingvars,matid2mng,labelnum,mod
 
 print('\n\nMODEL %s\n\nTraining on %s with traincode \'%s\'\n\n'%(modelID,trainingsuf,traincode))
 
-with open('settings/settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size),settings,pickle.HIGHEST_PROTOCOL)
+with open('settings/settings%s'%modelID,'w') as settings: pickle.dump((trainingsuf,embdic,binary,context_size,retrieval_size,tryloc),settings,pickle.HIGHEST_PROTOCOL)
 
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile)
 word2loc,word2dist,vocab_size,emb_size = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 
 epochsets = (maxup,itperup)
-settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes)
+settingvars = (trainingsuf,embdic,binary,context_size,retrieval_size,vocab_size,emb_size,reducelr,epochsets,traincode,notes,tryloc)
 
 matid2mng = get_meaning_matrix(trainingpairs,word2dist)
 
