@@ -1,4 +1,4 @@
-modelID = '5a'
+modelID = 'test'
 
 context_size = 200
 retrieval_size = 80
@@ -17,7 +17,7 @@ reducelr = False
 embdic='embs/brouwerCOALS-100.txt'
 binary = True
 
-tryloc=True
+tryloc=False
 
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
