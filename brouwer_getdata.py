@@ -1,16 +1,15 @@
 import pickle
 from util_brouwer import *
 
+ster_scale=.5
 meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
-print triplets
-inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list,triplets,dutch=True,holdout=True)
-print len(inputpairs)
+inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list,triplets,dutch=True,holdout=False,ster_scale=ster_scale)
 # with open('textcheck.txt','w') as out:
 #     for s,_,_ in inputpairs: out.write(' '.join(s) + '\n')
 # # 
-trainingsuf = 'br-holdoutB-dutch'
+trainingsuf = 'br-orig-ster%s-dutch'%ster_scale
 # 
-# with open('trainingpairs/trainingpairs-%s'%trainingsuf,'w') as trainingfile: pickle.dump(inputpairs,trainingfile,pickle.HIGHEST_PROTOCOL)
+with open('trainingpairs/trainingpairs-%s'%trainingsuf,'w') as trainingfile: pickle.dump(inputpairs,trainingfile,pickle.HIGHEST_PROTOCOL)
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as trainingfile: trainingpairs = pickle.load(trainingfile)
 with open('textcheck.txt','w') as out:
     for s,_,_ in trainingpairs: out.write(' '.join(s) + '\n')

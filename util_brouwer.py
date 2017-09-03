@@ -97,7 +97,7 @@ def read_meaning_dict(filename,dutch=False):
             triplets.append(triplet_mis)
     return meaning_dict_list,triplets
 
-def generate_brouwer_train_sentences(meaning_dict_list,triplets,holdout=False,dutch=False):
+def generate_brouwer_train_sentences(meaning_dict_list,triplets,holdout=False,dutch=False,ster_scale=1):
     #***TODO figure out whether embeddings should be lemma***
     if dutch:
         activestr = '%s heeft %s %s'
@@ -139,6 +139,9 @@ def generate_brouwer_train_sentences(meaning_dict_list,triplets,holdout=False,du
         num_each_ster = (len(inputpairs))/len(meaning_dict_list)
     else:
         num_each_ster = (len(inputpairs)/2)/len(meaning_dict_list) 
+        
+    num_each_ster *= ster_scale
+    
     print 'all-comb len: %s'%len(inputpairs)
     print 'num each ster: %s'%num_each_ster   
     sters = []
@@ -156,7 +159,7 @@ def generate_brouwer_train_sentences(meaning_dict_list,triplets,holdout=False,du
             sters.append((passive,meaning,i))
         id2meaning[i] = meaning
         i += 1
-    sters = sters * num_each_ster
+    sters = sters * int(num_each_ster)
     inputpairs += sters
     return inputpairs,id2meaning
 
