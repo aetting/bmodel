@@ -1,4 +1,4 @@
-modelID = '4d'
+modelID = '4e'
 
 context_size = 200
 retrieval_size = 80
@@ -16,10 +16,10 @@ itperup = 100 #100 in Brouwer
 embdic='embs/brouwerCOALS-100.txt'
 binary = True
 
+reducelr=True
 tryloc=False
-reducelr=False
 
 # dict='brouwerGloVe-100.txt'
 # trainingsuf = 'br-origfulleng'
 
-notes='try .5 of ster data to test effect of ratio'
+notes='try .5 of ster data again -- this time with reducing lr'

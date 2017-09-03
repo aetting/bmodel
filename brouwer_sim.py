@@ -83,7 +83,7 @@ def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '5a'
+modelID = '4d'
 
 print 'Loading variables ...'
 with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size,tryloc = pickle.load(settings)

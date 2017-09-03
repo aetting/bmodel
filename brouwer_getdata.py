@@ -1,7 +1,7 @@
 import pickle
 from util_brouwer import *
 
-ster_scale=.5
+ster_scale=.25
 meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
 inputpairs,origid2meaning = generate_brouwer_train_sentences(meaning_dict_list,triplets,dutch=True,holdout=False,ster_scale=ster_scale)
 # with open('textcheck.txt','w') as out:
