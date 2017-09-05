@@ -83,10 +83,17 @@ def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
 
-modelID = '4d'
+modelID = '4c'
 
 print 'Loading variables ...'
-with open('settings/settings%s'%modelID) as settings: trainingsuf,embdic,binary,context_size,retrieval_size,tryloc = pickle.load(settings)
+with open('settings/settings%s'%modelID) as settings: 
+    settingvars = pickle.load(settings)
+    if len(settingvars) == 6:
+        trainingsuf,embdic,binary,context_size,retrieval_size,tryloc = settingvars
+    else:
+        trainingsuf,embdic,binary,context_size,retrieval_size = settingvars
+        tryloc = False
+        
 with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
 
 if not embdic.startswith('embs'): embdic = 'embs/%s'%embdic
