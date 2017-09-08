@@ -68,62 +68,68 @@ def plot_means(meandict,sedict,title,filestr,modelid,color='steelblue'):
     means = [meandict[k] for k in labels]
     se = [sedict[k] for k in labels]
     
-    ind = (np.arange(len(means))) # the x locations for the groups 
-    width = 0.5 
+    ind = (np.arange(len(means))/2.) # the x locations for the groups 
+    width = 0.4
     
     fig, ax = plt.subplots()
     rects = ax.bar(ind, means, width, color=color,yerr=se,error_kw={'ecolor':'black'})
 #     rects = ax.bar(ind, means, width, color='r', yerr=men_std) 
 #     ax.set_xlabel('Condition',size='large')
 #     ax.set_title(title,size=20)
+    patterns = ('-', '+', 'x','.') # ('\\', 'o', 'O', '*')
+    for bar, pattern in zip(rects, patterns):
+        bar.set_hatch(pattern) 
+        
     ax.set_xticks(ind) 
     ax.set_xticklabels(labels,size=19)
     plt.xlim(xmin=-.5,xmax=3.5) 
     plt.tick_params(axis='y', which='major', labelsize=16)
     plt.savefig('plots/%s-%s.png'%(filestr,modelid))
     
+def main(modelID,plot=True):
 
-modelID = '4c'
-
-print 'Loading variables ...'
-with open('settings/settings%s'%modelID) as settings: 
-    settingvars = pickle.load(settings)
-    if len(settingvars) == 6:
-        trainingsuf,embdic,binary,context_size,retrieval_size,tryloc = settingvars
-    else:
-        trainingsuf,embdic,binary,context_size,retrieval_size = settingvars
-        tryloc = False
+    print 'Loading variables ...'
+    with open('settings/settings%s'%modelID) as settings: 
+        settingvars = pickle.load(settings)
+        if len(settingvars) == 6:
+            trainingsuf,embdic,binary,context_size,retrieval_size,tryloc = settingvars
+        else:
+            trainingsuf,embdic,binary,context_size,retrieval_size = settingvars
+            tryloc = False
         
-with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
+    with open('trainingpairs/trainingpairs-%s'%trainingsuf) as inputfile: trainingpairs = pickle.load(inputfile) 
 
-if not embdic.startswith('embs'): embdic = 'embs/%s'%embdic
+    if not embdic.startswith('embs'): embdic = 'embs/%s'%embdic
 
-word2loc,word2dist,vocab_size,emb_size, = get_vars(trainingpairs,embdic,debug=False,binary=binary)
+    word2loc,word2dist,vocab_size,emb_size, = get_vars(trainingpairs,embdic,debug=False,binary=binary)
 
-trainingsuf2 = 'br-origfulldutch'
-with open('trainingpairs/trainingpairs-%s'%trainingsuf2) as inputfile: trainingpairs2 = pickle.load(inputfile)
-matid2mng = get_meaning_matrix(trainingpairs2,word2dist)
+    trainingsuf2 = 'br-origfulldutch'
+    with open('trainingpairs/trainingpairs-%s'%trainingsuf2) as inputfile: trainingpairs2 = pickle.load(inputfile)
+    matid2mng = get_meaning_matrix(trainingpairs2,word2dist)
 
-mat,_ = matid2mng
-print len(mat)
+    mat,_ = matid2mng
+    print len(mat)
 
-labelnum = None
+    labelnum = None
 
-meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
-siminput = generate_hoeks(meaning_dict_list,dutch=True)
+    meaning_dict_list,triplets = read_meaning_dict('sentsources/sim1-d.csv',dutch=True)
+    siminput = generate_hoeks(meaning_dict_list,dutch=True)
 
-netTest = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output='dist',tryloc=tryloc)
-loaded_dict = torch.load('modelsaves/modelsave%s'%modelID)
-netTest.load_state_dict(loaded_dict)
+    netTest = NetFull(vocab_size,emb_size,context_size,retrieval_size,labelnum,output='dist',tryloc=tryloc)
+    loaded_dict = torch.load('modelsaves/modelsave%s'%modelID)
+    netTest.load_state_dict(loaded_dict)
 
-(n400_means,n400_se),(p600_means,p600_se) = simulate(siminput,netTest,context_size,retrieval_size,word2loc,word2dist,matid2mng)
-print n400_means
-print n400_se
-print p600_means
-print p600_se
+    (n400_means,n400_se),(p600_means,p600_se) = simulate(siminput,netTest,context_size,retrieval_size,word2loc,word2dist,matid2mng)
+    print n400_means
+    print n400_se
+    print p600_means
+    print p600_se
 
-# n400means = {'passive': 0.33484166912370306, 'mis-pass': 0.48263581026787927, 'mis-act': 0.45988320220812245, 'reversal': 0.34160386911697888}
-plot_means(n400_means,n400_se,'N400 amplitudes','N400',modelID)
-plot_means(p600_means,p600_se,'P600 amplitudes','P600',modelID,color='peru')
+    # n400means = {'passive': 0.33484166912370306, 'mis-pass': 0.48263581026787927, 'mis-act': 0.45988320220812245, 'reversal': 0.34160386911697888}
+    if plot:
+        plot_means(n400_means,n400_se,'N400 amplitudes','N400',modelID)
+        plot_means(p600_means,p600_se,'P600 amplitudes','P600',modelID,color='peru')
+    
+    return n400_means,n400_se,p600_means,p600_se
 
-# print cos_dist(np.array([1,0,3]),np.array([1,2,3]))
+    # print cos_dist(np.array([1,0,3]),np.array([1,2,3]))
